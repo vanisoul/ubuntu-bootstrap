@@ -25,27 +25,19 @@ case $choice in
         echo "================================"
 
         # 建立目錄
-        mkdir -p "modules/pkg"
         mkdir -p "scripts/pkg"
 
         # 複製並自訂模板
-        cp "templates/pkg.template.toml" "modules/pkg/$module_name.toml"
         cp "templates/pkg.template.sh" "scripts/pkg/$module_name.sh"
 
         # 替換模板變數
-        sed -i "s/{{MODULE_NAME}}/$module_name/g" "modules/pkg/$module_name.toml"
         sed -i "s/{{MODULE_NAME}}/$module_name/g" "scripts/pkg/$module_name.sh"
 
         # 設定執行權限
         chmod +x "scripts/pkg/$module_name.sh"
 
-        # 自動更新 justfile
-        echo "🔄 更新 justfile..."
-        scripts/update-justfile.sh > /dev/null 2>&1
-
         echo "✅ 套件模組建立完成！"
         echo "📁 已建立檔案："
-        echo "  ├── modules/pkg/$module_name.toml"
         echo "  └── scripts/pkg/$module_name.sh"
         echo ""
         echo "📝 下一步："
@@ -58,27 +50,19 @@ case $choice in
         echo "=================================="
 
         # 建立目錄
-        mkdir -p "modules/vscode"
         mkdir -p "scripts/vscode"
 
         # 複製並自訂模板
-        cp "templates/vscode.template.toml" "modules/vscode/$module_name.toml"
         cp "templates/vscode.template.sh" "scripts/vscode/$module_name.sh"
 
         # 替換模板變數
-        sed -i "s/{{MODULE_NAME}}/$module_name/g" "modules/vscode/$module_name.toml"
         sed -i "s/{{MODULE_NAME}}/$module_name/g" "scripts/vscode/$module_name.sh"
 
         # 設定執行權限
         chmod +x "scripts/vscode/$module_name.sh"
 
-        # 自動更新 justfile
-        echo "🔄 更新 justfile..."
-        scripts/update-justfile.sh > /dev/null 2>&1
-
         echo "✅ VSCode 模組建立完成！"
         echo "📁 已建立檔案："
-        echo "  ├── modules/vscode/$module_name.toml"
         echo "  └── scripts/vscode/$module_name.sh"
         echo ""
         echo "📝 下一步："
