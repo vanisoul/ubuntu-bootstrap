@@ -24,3 +24,8 @@ else
 fi
 
 echo "✅ bat 安裝完成"
+
+# 寫入 alias 到 ~/.zshrc
+echo "" >> ~/.zshrc
+echo "# batcat" >> ~/.zshrc
+echo "alias bcat='batcat'" >> ~/.zshrc
