@@ -2,6 +2,13 @@
 
 echo "📦 開始安裝 {{MODULE_NAME}}..."
 
+# 檢查是否已安裝
+if command -v {{MODULE_NAME}} &> /dev/null; then
+    echo "✅ {{MODULE_NAME}} 已安裝，版本: $({{MODULE_NAME}} --version 2>/dev/null || echo "已安裝")"
+    echo "跳過安裝步驟"
+    exit 0
+fi
+
 # ===========================================
 # TODO: 在此處添加 {{MODULE_NAME}} 安裝邏輯
 # ===========================================
@@ -29,5 +36,8 @@ echo "📦 開始安裝 {{MODULE_NAME}}..."
 #     echo "❌ {{MODULE_NAME}} 安裝失敗"
 #     exit 1
 # fi
+
+# echo "" >> ~/.zshrc
+# echo "# {{MODULE_NAME}}" >> ~/.zshrc
 
 echo "✅ {{MODULE_NAME}} 安裝完成"

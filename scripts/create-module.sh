@@ -49,9 +49,7 @@ case $choice in
         echo "  └── scripts/pkg/$module_name.sh"
         echo ""
         echo "📝 下一步："
-        echo "  1. 編輯 scripts/pkg/$module_name.sh 加入安裝邏輯"
-        echo "  2. 執行 './just bootstrap' 自動發現並執行"
-        echo "  3. 或執行 './just pkg-$module_name' 單獨測試此模組"
+        echo "  編輯 scripts/pkg/$module_name.sh 加入安裝邏輯"
         ;;
 
     2)
@@ -84,9 +82,7 @@ case $choice in
         echo "  └── scripts/vscode/$module_name.sh"
         echo ""
         echo "📝 下一步："
-        echo "  1. 編輯 scripts/vscode/$module_name.sh 自訂安裝邏輯"
-        echo "  2. 執行 './just bootstrap' 自動發現並執行"
-        echo "  3. 或執行 './just vscode-$module_name' 單獨測試此模組"
+        echo "  編輯 scripts/vscode/$module_name.sh 自訂安裝邏輯"
         ;;
 
     3)
