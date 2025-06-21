@@ -1,0 +1,37 @@
+# fzf 套件管理
+# 使用方法: just <task_name>
+
+# 預設任務：顯示可用任務
+default:
+    @echo "📦 fzf 套件管理"
+    @echo "=========================="
+    @echo ""
+    @echo "可用任務："
+    @echo "  🔍 check    - 檢查是否已安裝"
+    @echo "  📦 install  - 執行安裝"
+    @echo ""
+    @echo "使用方法: just <task_name>"
+
+# 檢查是否已安裝
+check:
+    #!/usr/bin/env bash
+    echo "🔍 檢查 fzf 安裝狀態..."
+    if command -v fzf &> /dev/null; then \
+        echo "✅ fzf 已安裝，版本: $(fzf --version 2>/dev/null || echo "已安裝")"; \
+    else \
+        echo "❌ fzf 尚未安裝"; \
+    fi
+
+# 執行安裝
+install:
+    #!/usr/bin/env bash
+    echo "🚀 執行 fzf 安裝..."
+    just _do_install
+    echo "✅ fzf 安裝完成"
+
+
+# 內部安裝邏輯
+_do_install:
+    #!/usr/bin/env bash
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    ~/.fzf/install --completion --key-bindings --completion --update-rc

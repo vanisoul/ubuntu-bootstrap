@@ -1,0 +1,48 @@
+# git 套件管理
+# 使用方法: just <task_name>
+
+# 預設任務：顯示可用任務
+default:
+    @echo "📦 git 套件管理"
+    @echo "=========================="
+    @echo ""
+    @echo "可用任務："
+    @echo "  🔍 check    - 檢查是否已安裝"
+    @echo "  📦 install  - 執行安裝"
+    @echo ""
+    @echo "使用方法: just <task_name>"
+
+# 檢查是否已安裝
+check:
+    #!/usr/bin/env bash
+    echo "🔍 檢查 git 安裝狀態..."
+    if command -v git &> /dev/null; then \
+        echo "✅ git 已安裝，版本: $(git --version)"; \
+    else \
+        echo "❌ git 尚未安裝"; \
+    fi
+
+# 執行安裝
+install:
+    #!/usr/bin/env bash
+    echo "🚀 執行 git 安裝..."
+    just _do_install
+    echo "✅ git 安裝完成"
+
+
+# 內部安裝邏輯
+_do_install:
+    #!/usr/bin/env bash
+    # 更新套件清單
+    echo "🔄 更新套件清單..."
+    sudo apt update
+
+    # 安裝 git
+    echo "📦 安裝 git..."
+    if sudo apt install -y git; then
+        echo "✅ git 安裝成功"
+        git --version
+    else
+        echo "❌ git 安裝失敗"
+        exit 1
+    fi

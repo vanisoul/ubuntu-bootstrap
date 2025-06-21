@@ -1,0 +1,48 @@
+# btop 套件管理
+# 使用方法: just <task_name>
+
+# 預設任務：顯示可用任務
+default:
+    @echo "📦 btop 套件管理"
+    @echo "=========================="
+    @echo ""
+    @echo "可用任務："
+    @echo "  🔍 check    - 檢查是否已安裝"
+    @echo "  📦 install  - 執行安裝"
+    @echo ""
+    @echo "使用方法: just <task_name>"
+
+# 檢查是否已安裝
+check:
+    #!/usr/bin/env bash
+    echo "🔍 檢查 btop 安裝狀態..."
+    if command -v btop &> /dev/null; then \
+        echo "✅ btop 已安裝，版本: $(btop --version 2>/dev/null || echo "已安裝")"; \
+    else \
+        echo "❌ btop 尚未安裝"; \
+    fi
+
+# 執行安裝
+install:
+    #!/usr/bin/env bash
+    echo "🚀 執行 btop 安裝..."
+    just _do_install
+    echo "✅ btop 安裝完成"
+
+
+# 內部安裝邏輯
+_do_install:
+    #!/usr/bin/env bash
+    # 更新套件清單
+    echo "🔄 更新套件清單..."
+    sudo apt update
+
+    # 安裝 btop
+    echo "📦 安裝 btop..."
+    if sudo apt install -y btop; then
+        echo "✅ btop 安裝成功"
+        btop --version 2>/dev/null || echo "btop 已安裝完成"
+    else
+        echo "❌ btop 安裝失敗"
+        exit 1
+    fi

@@ -1,20 +1,45 @@
-#!/bin/bash
+# starship 套件管理
+# 使用方法: just <task_name>
 
-echo "📦 開始安裝 starship..."
+# 預設任務：顯示可用任務
+default:
+    @echo "📦 starship 套件管理"
+    @echo "=========================="
+    @echo ""
+    @echo "可用任務："
+    @echo "  🔍 check    - 檢查是否已安裝"
+    @echo "  📦 install  - 執行安裝"
+    @echo ""
+    @echo "使用方法: just <task_name>"
 
-if command -v starship &> /dev/null; then
-    echo "✅ starship 已安裝，版本: $(starship --version 2>/dev/null || echo "已安裝")"
-    echo "跳過安裝步驟"
-    exit 0
-fi
+# 檢查是否已安裝
+check:
+    #!/usr/bin/env bash
+    echo "🔍 檢查 starship 安裝狀態..."
+    if command -v starship &> /dev/null; then \
+        echo "✅ starship 已安裝，版本: $(starship --version 2>/dev/null || echo "已安裝")"; \
+    else \
+        echo "❌ starship 尚未安裝"; \
+    fi
 
-curl -sS https://starship.rs/install.sh | sh
+# 執行安裝
+install:
+    #!/usr/bin/env bash
+    echo "🚀 執行 starship 安裝..."
+    just _do_install
+    echo "✅ starship 安裝完成"
 
-echo "" >> ~/.zshrc
-echo "# starship" >> ~/.zshrc
-echo 'eval "$(starship init zsh)"' >> ~/.zshrc
 
-cat <<'EOF' > ./starship.toml
+# 內部安裝邏輯
+_do_install:
+    #!/usr/bin/env bash
+    curl -sS https://starship.rs/install.sh | sh
+
+    echo "" >> ~/.zshrc
+    echo "# starship" >> ~/.zshrc
+    echo 'eval "$(starship init zsh)"' >> ~/.zshrc
+
+    cat <<'EOF' > ./starship.toml
 command_timeout = 10000
 
 [aws]
@@ -180,5 +205,3 @@ format = '\[[$symbol($version)]($style)\]'
 [zig]
 format = '\[[$symbol($version)]($style)\]'
 EOF
-
-echo "✅ starship 安裝完成"

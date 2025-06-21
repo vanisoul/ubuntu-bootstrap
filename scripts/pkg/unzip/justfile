@@ -1,0 +1,48 @@
+# unzip 套件管理
+# 使用方法: just <task_name>
+
+# 預設任務：顯示可用任務
+default:
+    @echo "📦 unzip 套件管理"
+    @echo "=========================="
+    @echo ""
+    @echo "可用任務："
+    @echo "  🔍 check    - 檢查是否已安裝"
+    @echo "  📦 install  - 執行安裝"
+    @echo ""
+    @echo "使用方法: just <task_name>"
+
+# 檢查是否已安裝
+check:
+    #!/usr/bin/env bash
+    echo "🔍 檢查 unzip 安裝狀態..."
+    if command -v unzip &> /dev/null; then \
+        echo "✅ unzip 已安裝，版本: $(unzip -v | head -n1)"; \
+    else \
+        echo "❌ unzip 尚未安裝"; \
+    fi
+
+# 執行安裝
+install:
+    #!/usr/bin/env bash
+    echo "🚀 執行 unzip 安裝..."
+    just _do_install
+    echo "✅ unzip 安裝完成"
+
+
+# 內部安裝邏輯
+_do_install:
+    #!/usr/bin/env bash
+    # 更新套件清單
+    echo "🔄 更新套件清單..."
+    sudo apt update
+
+    # 安裝 unzip
+    echo "📦 安裝 unzip..."
+    if sudo apt install -y unzip; then
+        echo "✅ unzip 安裝成功"
+        unzip -v | head -n1
+    else
+        echo "❌ unzip 安裝失敗"
+        exit 1
+    fi

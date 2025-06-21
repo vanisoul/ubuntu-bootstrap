@@ -16,7 +16,7 @@ if [ -f "scripts/shell/init.sh" ]; then
 fi
 
 # 🎯 自動發現所有 pkg 模組
-echo "📦 自動發現套件模組..."
+echo "📦 掃描套件模組..."
 pkg_count=0
 
 # 收集所有 pkg 模組並按權重排序
@@ -30,34 +30,41 @@ for pkg_dir in scripts/pkg/*/; do
     fi
 done
 
-# 同時支援舊格式的 .sh 檔案
-for pkg_file in scripts/pkg/*.sh; do
-    if [ -f "$pkg_file" ]; then
-        pkg_name=$(basename "$pkg_file" .sh)
-        pkg_modules+=("999:$pkg_name")  # 舊格式給予較低優先權
-        ((pkg_count++))
-    fi
-done
+echo "  └── 共發現 $pkg_count 個套件模組"
 
-# 按權重排序並執行
+# 按權重排序（權重越高越前面，所以使用 -rn 反向排序）
 if [ ${#pkg_modules[@]} -gt 0 ]; then
-    IFS=$'\n' sorted_modules=($(sort -n <<< "${pkg_modules[*]}"))
+    echo "📦 開始執行套件安裝..."
+    IFS=$'\n' sorted_modules=($(sort -rn <<< "${pkg_modules[*]}"))
+
     for module_entry in "${sorted_modules[@]}"; do
         weight="${module_entry%%:*}"
         pkg_name="${module_entry##*:}"
 
-        echo "  ├── 安裝 $pkg_name (權重: $weight)"
+        echo ""
+        echo "🔧 處理套件: $pkg_name (權重: $weight)"
 
-        # 優先執行 justfile 格式
         if [ -f "scripts/pkg/$pkg_name/justfile" ]; then
-            cd "scripts/pkg/$pkg_name" && just install && cd - > /dev/null
-        elif [ -f "scripts/pkg/$pkg_name.sh" ]; then
-            scripts/pkg/$pkg_name.sh
+            # 先執行 install
+            echo "  ├── 執行安裝..."
+            XDG_RUNTIME_DIR=/tmp ./just -f ./scripts/pkg/$pkg_name/justfile install
+            install_result=$?
+
+            # 再執行 check
+            echo "  └── 執行檢查..."
+            XDG_RUNTIME_DIR=/tmp ./just -f ./scripts/pkg/$pkg_name/justfile check
+
+            if [ $install_result -ne 0 ]; then
+                echo "  ❌ $pkg_name 安裝失敗"
+            else
+                echo "  ✅ $pkg_name 處理完成"
+            fi
         fi
     done
-fi
 
-echo "  └── 共發現 $pkg_count 個套件模組"
+    echo ""
+    echo "✅ 所有套件處理完成！"
+fi
 
 # 🎯 自動發現所有 vscode 模組
 echo "🔧 自動發現 VSCode 模組..."

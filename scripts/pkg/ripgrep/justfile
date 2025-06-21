@@ -1,0 +1,38 @@
+# ripgrep 套件管理
+# 使用方法: just <task_name>
+
+# 預設任務：顯示可用任務
+default:
+    @echo "📦 ripgrep 套件管理"
+    @echo "=========================="
+    @echo ""
+    @echo "可用任務："
+    @echo "  🔍 check    - 檢查是否已安裝"
+    @echo "  📦 install  - 執行安裝"
+    @echo ""
+    @echo "使用方法: just <task_name>"
+
+# 檢查是否已安裝
+check:
+    #!/usr/bin/env bash
+    echo "🔍 檢查 ripgrep 安裝狀態..."
+    if command -v rg &> /dev/null; then \
+        echo "✅ ripgrep 已安裝，版本: $(rg --version 2>/dev/null || echo "已安裝")"; \
+    else \
+        echo "❌ ripgrep 尚未安裝"; \
+    fi
+
+# 執行安裝
+install:
+    #!/usr/bin/env bash
+    echo "🚀 執行 ripgrep 安裝..."
+    just _do_install
+    echo "✅ ripgrep 安裝完成"
+
+
+# 內部安裝邏輯
+_do_install:
+    #!/usr/bin/env bash
+    curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.1/ripgrep_14.1.1-1_amd64.deb
+    sudo dpkg -i ripgrep_14.1.1-1_amd64.deb
+    rm ripgrep_14.1.1-1_amd64.deb

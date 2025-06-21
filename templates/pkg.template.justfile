@@ -33,10 +33,6 @@ install:
 # 內部安裝邏輯
 _do_install:
     #!/usr/bin/env bash
-    # ===========================================
-    # TODO: 在此處添加 {{MODULE_NAME}} 安裝邏輯
-    # ===========================================
-
     # 範例 1: APT 套件安裝
     # sudo apt update
     # sudo apt install -y package-name
