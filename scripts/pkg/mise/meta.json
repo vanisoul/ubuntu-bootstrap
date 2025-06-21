@@ -1,0 +1,9 @@
+{
+  "name": "mise",
+  "description": "mise 套件安裝模組",
+  "weight": 100,
+  "type": "pkg",
+  "format": "justfile",
+  "created": "2025-06-21",
+  "version": "1.0.0"
+}

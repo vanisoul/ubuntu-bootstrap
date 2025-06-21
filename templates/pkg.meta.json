@@ -1,0 +1,9 @@
+{
+  "name": "{{MODULE_NAME}}",
+  "description": "{{MODULE_NAME}} 套件安裝模組",
+  "weight": 100,
+  "type": "pkg",
+  "format": "justfile",
+  "created": "{{CREATED_DATE}}",
+  "version": "1.0.0"
+}

@@ -25,23 +25,29 @@ case $choice in
         echo "================================"
 
         # 建立目錄
-        mkdir -p "scripts/pkg"
+        mkdir -p "scripts/pkg/$module_name"
 
-        # 複製並自訂模板
-        cp "templates/pkg.template.sh" "scripts/pkg/$module_name.sh"
+        # 複製並自訂 justfile 模板
+        cp "templates/pkg.template.justfile" "scripts/pkg/$module_name/justfile"
+
+        # 複製並自訂 meta.json 模板
+        cp "templates/pkg.meta.json" "scripts/pkg/$module_name/meta.json"
 
         # 替換模板變數
-        sed -i "s/{{MODULE_NAME}}/$module_name/g" "scripts/pkg/$module_name.sh"
-
-        # 設定執行權限
-        chmod +x "scripts/pkg/$module_name.sh"
+        sed -i "s/{{MODULE_NAME}}/$module_name/g" "scripts/pkg/$module_name/justfile"
+        sed -i "s/{{MODULE_NAME}}/$module_name/g" "scripts/pkg/$module_name/meta.json"
+        sed -i "s/{{CREATED_DATE}}/$(date -I)/g" "scripts/pkg/$module_name/meta.json"
 
         echo "✅ 套件模組建立完成！"
         echo "📁 已建立檔案："
-        echo "  └── scripts/pkg/$module_name.sh"
+        echo "  ├── scripts/pkg/$module_name/justfile"
+        echo "  └── scripts/pkg/$module_name/meta.json"
         echo ""
         echo "📝 下一步："
-        echo "  編輯 scripts/pkg/$module_name.sh 加入安裝邏輯"
+        echo "  1. 進入目錄: cd scripts/pkg/$module_name"
+        echo "  2. 編輯 justfile 加入安裝邏輯"
+        echo "  3. 調整 meta.json 中的權重 (預設: 100)"
+        echo "  4. 執行任務: just check 或 just install"
         ;;
 
     2)
